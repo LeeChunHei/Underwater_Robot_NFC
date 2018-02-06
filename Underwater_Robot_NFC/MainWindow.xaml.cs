@@ -65,7 +65,14 @@ namespace Underwater_Robot_NFC
 
 
             //close and release
-            xlWorkbook.Save();
+            try
+            {
+                xlWorkbook.Save();
+            } catch (InvalidComObjectException exception)
+            {
+                Console.WriteLine(exception);
+            }
+
             xlWorkbook.Close();
             Marshal.ReleaseComObject(xlRange);
             Marshal.ReleaseComObject(xlWorksheet);
