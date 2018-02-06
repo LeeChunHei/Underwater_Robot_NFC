@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -37,7 +38,6 @@ namespace Underwater_Robot_NFC
         Excel._Worksheet xlWorksheet;
         Excel.Range xlRange;
 
-
         public MainWindow()
         {
             InitializeComponent();
@@ -51,6 +51,16 @@ namespace Underwater_Robot_NFC
             xlWorkbook = xlApp.Workbooks.Open(System.Windows.Forms.Application.StartupPath  + "\\underwater_robot_balance.xlsx", Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
             xlWorksheet = xlWorkbook.Sheets[1];
             xlRange = xlWorksheet.UsedRange;
+        }
+
+        private void log(string log_message)
+        {
+            using(StreamWriter log_text = File.AppendText("log.txt")){
+                log_text.Write("\r\nLog Entry : ");
+                log_text.WriteLine("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString());
+                log_text.WriteLine("  {0}", log_message);
+                log_text.WriteLine("-------------------------------");
+            }
         }
 
         private void OnProcessExit(object sender, EventArgs e)
@@ -98,23 +108,27 @@ namespace Underwater_Robot_NFC
                     timer.Interval = 10;
                     timer.Tick += new EventHandler(timer_Tick);
                     timer.Start();
+                    log("Success: port opened");
                 }
                 else if (!comport.IsOpen)
                 {
                     comport.Open();
                     connect_btn.Content = "Disconnect";
                     timer.Start();
+                    log("Success: port opened");
                 }
                 else
                 {
                     comport.Close();
                     timer.Stop();
                     connect_btn.Content = "Connect";
+                    log("Success: port closed");
                 }
             }
             catch
             {
                 System.Windows.MessageBox.Show("No com port selected","Error");
+                log("Error: cannot open port");
                 return;
             }
         }
@@ -182,54 +196,72 @@ namespace Underwater_Robot_NFC
 
         private void check_out()
         {
-            Int32 value_reduced = 0, unit_price_amt = 0;
-            if (!Int32.TryParse(((TextBox)balance_change).Text, out value_reduced))
+            try
             {
-                System.Windows.MessageBox.Show("Please type integer!", "Error");
-                ((TextBox)balance_change).Text = "";
-                return;
-            }
-            if (value_reduced < 0)
-            {
-                System.Windows.MessageBox.Show("Please type positive integer!", "Error");
-                ((TextBox)balance_change).Text = "";
-                return;
-            }
-            if (!Int32.TryParse(((TextBox)unit_price).Text, out unit_price_amt))
-            {
-                System.Windows.MessageBox.Show("Please type integer in unit price!", "Error");
-                ((TextBox)unit_price).Text = "";
-                return;
-            }
-            if (unit_price_amt < 0)
-            {
-                System.Windows.MessageBox.Show("Please type positive integer in unit price!", "Error");
-                ((TextBox)balance_change).Text = "";
-                return;
-            }
-            value_reduced *= unit_price_amt;
-            bool flag = false;
-            Window1 w = new Window1(ref card_tapped, ref flag);
-            processed_flag = false;
-            w.ShowDialog();
+                if (!comport.IsOpen)
+                {
+                    System.Windows.MessageBox.Show("No com port selected", "Error");
+                    log("Error: port not opened");
+                    return;
+                }
+                Int32 value_reduced = 0, unit_price_amt = 0;
+                if (!Int32.TryParse(((TextBox)balance_change).Text, out value_reduced))
+                {
+                    System.Windows.MessageBox.Show("Please type integer!", "Error");
+                    ((TextBox)balance_change).Text = "";
+                    return;
+                }
+                if (value_reduced < 0)
+                {
+                    System.Windows.MessageBox.Show("Please type positive integer!", "Error");
+                    ((TextBox)balance_change).Text = "";
+                    return;
+                }
+                if (!Int32.TryParse(((TextBox)unit_price).Text, out unit_price_amt))
+                {
+                    System.Windows.MessageBox.Show("Please type integer in unit price!", "Error");
+                    ((TextBox)unit_price).Text = "";
+                    return;
+                }
+                if (unit_price_amt < 0)
+                {
+                    System.Windows.MessageBox.Show("Please type positive integer in unit price!", "Error");
+                    ((TextBox)balance_change).Text = "";
+                    return;
+                }
+                value_reduced *= unit_price_amt;
+                bool flag = false;
+                Window1 w = new Window1(ref card_tapped, ref flag);
+                processed_flag = false;
+                w.ShowDialog();
 
-            if (!processed_flag)
-            {
+                if (!processed_flag)
+                {
+                    ((TextBox)balance_change).Text = "";
+                    return;
+                }
+                double value = xlRange.Cells[team_id, 2].Value2;
+                if (value_reduced > value)
+                {
+                    System.Windows.MessageBox.Show("Not enough credit!", "Error");
+                    ((TextBox)balance_change).Text = "";
+                    log("Error: " + xlRange.Cells[team_id, 1].Text + " remains " + value.ToString() + " credits, request " + value_reduced.ToString() + " credits, not enough credit");
+                    return;
+                }
+
+                value -= value_reduced;
+                xlRange.Cells[team_id, 2].Value2 = value;
+                System.Windows.MessageBox.Show("Balance Updated\n" + "New balance: " + value.ToString(), "Success");
                 ((TextBox)balance_change).Text = "";
-                return;
+                log("Success: " + xlRange.Cells[team_id, 1].Text + " remains " + value.ToString() + " credits, request " + value_reduced.ToString() + " credits, new balance " + value.ToString() + " credits");
             }
-            double value = xlRange.Cells[team_id, 2].Value2;
-            if (value_reduced > value)
+            catch
             {
-                System.Windows.MessageBox.Show("Not enough credit!", "Error");
-                ((TextBox)balance_change).Text = "";
+                System.Windows.MessageBox.Show("No com port selected", "Error");
+                log("Error: cannot open port");
                 return;
             }
 
-            value -= value_reduced;
-            xlRange.Cells[team_id, 2].Value2 = value;
-            System.Windows.MessageBox.Show("Balance Updated\n" + "New balance: " + value.ToString(), "Success");
-            ((TextBox)balance_change).Text = "";
         }
 
         private void balance_changed(object sender, KeyEventArgs e)
