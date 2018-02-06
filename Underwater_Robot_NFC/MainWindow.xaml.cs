@@ -90,7 +90,7 @@ namespace Underwater_Robot_NFC
                 if (!comport.IsOpen)
                 {
                     comport.Open();
-                    System.Windows.MessageBox.Show("Port Opened","Success");
+                    connection_lbl.Content = "Connected";
                 }
             }
             catch
