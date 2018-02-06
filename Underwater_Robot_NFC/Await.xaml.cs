@@ -36,9 +36,14 @@ namespace Underwater_Robot_NFC
         {
             if (MainWindow.card_tapped)
             {
-                flag = true;
+                MainWindow.processed_flag = true;
                 this.Close();
             }
+        }
+
+        private void btn_cancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

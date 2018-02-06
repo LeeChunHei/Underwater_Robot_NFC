@@ -26,6 +26,7 @@ namespace Underwater_Robot_NFC
         SerialPort comport;
         System.Windows.Forms.Timer timer;
         public static bool card_tapped = false;
+        public static bool processed_flag = false; 
         Byte[] send_buffer = new Byte[] { 0xAA, 0x02, 0x09, 0x04 };
         bool data_coming = false;
         Byte[] recieve_buffer = new Byte[5];
@@ -35,6 +36,7 @@ namespace Underwater_Robot_NFC
         Excel.Workbook xlWorkbook;
         Excel._Worksheet xlWorksheet;
         Excel.Range xlRange;
+
 
         public MainWindow()
         {
@@ -60,19 +62,13 @@ namespace Underwater_Robot_NFC
             //rule of thumb for releasing com objects:
             //  never use two dots, all COM objects must be referenced and released individually
             //  ex: [somthing].[something].[something] is bad
-
+            
             //release com objects to fully kill excel process from running in the background
 
 
             //close and release
-            try
-            {
-                xlWorkbook.Save();
-            } catch (InvalidComObjectException exception)
-            {
-                Console.WriteLine(exception);
-            }
 
+            xlWorkbook.Save();
             xlWorkbook.Close();
             Marshal.ReleaseComObject(xlRange);
             Marshal.ReleaseComObject(xlWorksheet);
@@ -141,7 +137,6 @@ namespace Underwater_Robot_NFC
         private void decode()
         {
             team_id = (UInt16)recieve_buffer[1];
-            team_id = 1;
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -170,51 +165,152 @@ namespace Underwater_Robot_NFC
             }
         }
 
-        private void balance_changed(object sender, KeyEventArgs e)
+        private void check_out()
         {
-            /*
-            if (!card_tapped)
+            Int32 value_reduced = 0, unit_price_amt = 0;
+            if (!Int32.TryParse(((TextBox)balance_change).Text, out value_reduced))
             {
-                System.Windows.MessageBox.Show("Please tap the card!", "Error");
+                System.Windows.MessageBox.Show("Please type integer!", "Error");
+                ((TextBox)balance_change).Text = "";
                 return;
             }
-            */
+            if (value_reduced < 0)
+            {
+                System.Windows.MessageBox.Show("Please type positive integer!", "Error");
+                ((TextBox)balance_change).Text = "";
+                return;
+            }
+            if (!Int32.TryParse(((TextBox)unit_price).Text, out unit_price_amt))
+            {
+                System.Windows.MessageBox.Show("Please type integer in unit price!", "Error");
+                ((TextBox)unit_price).Text = "";
+                return;
+            }
+            if (unit_price_amt < 0)
+            {
+                System.Windows.MessageBox.Show("Please type positive integer in unit price!", "Error");
+                ((TextBox)balance_change).Text = "";
+                return;
+            }
+            value_reduced *= unit_price_amt;
+            bool flag = false;
+            Window1 w = new Window1(ref card_tapped, ref flag);
+            processed_flag = false;
+            w.ShowDialog();
+
+            if (!processed_flag)
+            {
+                ((TextBox)balance_change).Text = "";
+                return;
+            }
+            double value = xlRange.Cells[team_id, 2].Value2;
+            if (value_reduced > value)
+            {
+                System.Windows.MessageBox.Show("Not enough credit!", "Error");
+                ((TextBox)balance_change).Text = "";
+                return;
+            }
+
+            value -= value_reduced;
+            xlRange.Cells[team_id, 2].Value2 = value;
+            System.Windows.MessageBox.Show("Balance Updated\n" + "New balance: " + value.ToString(), "Success");
+            ((TextBox)balance_change).Text = "";
+        }
+
+        private void balance_changed(object sender, KeyEventArgs e)
+        {
             if (e.Key == Key.Enter)
             {
-                
-                Int32 value_reduced = 0;
-                if(!Int32.TryParse(((TextBox)sender).Text, out value_reduced))
-                {
-                    System.Windows.MessageBox.Show("Please type integer!","Error");
-                    ((TextBox)sender).Text = "";
-                    return;
-                }
-                if (value_reduced < 0)
-                {
-                    System.Windows.MessageBox.Show("Please type positive integer!", "Error");
-                    ((TextBox)sender).Text = "";
-                    return;
-                }
-
-                bool flag = false;
-                Window1 w = new Window1(ref card_tapped, ref flag);
-                w.ShowDialog();
-                
-                //while (!card_tapped) ;
-                //w.Close();
-                
-                double value = xlRange.Cells[team_id, 2].Value2;
-                if (value_reduced > value)
-                {
-                    System.Windows.MessageBox.Show("Not enough credit!", "Error");
-                    ((TextBox)sender).Text = "";
-                    return;
-                }
-                value -= value_reduced;
-                xlRange.Cells[team_id, 2].Value2 = value;
-                System.Windows.MessageBox.Show("Balance Updated\n" + "New balance: " + value.ToString(), "Success");
-                ((TextBox)sender).Text = "";
+                check_out();
             }
+        }
+
+        private void price_add_one_Click(object sender, RoutedEventArgs e)
+        {
+            Int32 amt = 0;
+            if (!Int32.TryParse(((TextBox)balance_change).Text, out amt) || amt < 0)
+            {
+                amt = 1;
+            } else
+            {
+                amt += 1;
+            }
+            balance_change.Text = amt.ToString();
+        }
+
+        private void price_add_ten_Click(object sender, RoutedEventArgs e)
+        {
+            Int32 amt = 0;
+            if (!Int32.TryParse(((TextBox)balance_change).Text, out amt) || amt < 0)
+            {
+                amt = 5;
+            }
+            else
+            {
+                amt += 10;
+            }
+            balance_change.Text = amt.ToString();
+        }
+
+        private void price_add_five_Click(object sender, RoutedEventArgs e)
+        {
+            Int32 amt = 0;
+            if (!Int32.TryParse(((TextBox)balance_change).Text, out amt) || amt < 0)
+            {
+                amt = 5;
+            }
+            else
+            {
+                amt += 5;
+            }
+            balance_change.Text = amt.ToString();
+        }
+
+        private void price_sub_one_Click(object sender, RoutedEventArgs e)
+        {
+            Int32 amt = 0;
+            if (!Int32.TryParse(((TextBox)balance_change).Text, out amt) || amt < 1)
+            {
+                amt = 0;
+            }
+            else
+            {
+                amt -= 1;
+            }
+            balance_change.Text = amt.ToString();
+        }
+
+        private void price_sub_five_Click(object sender, RoutedEventArgs e)
+        {
+            Int32 amt = 0;
+            if (!Int32.TryParse(((TextBox)balance_change).Text, out amt) || amt < 5)
+            {
+                amt = 0;
+            }
+            else
+            {
+                amt -= 5;
+            }
+            balance_change.Text = amt.ToString();
+        }
+
+        private void price_sub_ten_Click(object sender, RoutedEventArgs e)
+        {
+            Int32 amt = 0;
+            if (!Int32.TryParse(((TextBox)balance_change).Text, out amt) || amt < 10)
+            {
+                amt = 0;
+            }
+            else
+            {
+                amt -= 10;
+            }
+            balance_change.Text = amt.ToString();
+        }
+
+        private void checkout_Click(object sender, RoutedEventArgs e)
+        {
+            check_out();
         }
     }
 }
