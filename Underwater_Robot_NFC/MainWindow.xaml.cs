@@ -48,7 +48,7 @@ namespace Underwater_Robot_NFC
                 this.comport_list.Items.Add(port);
             }
             xlApp = new Excel.Application();
-            xlWorkbook = xlApp.Workbooks.Open(@"C:\Users\mcreng\git\Underwater_Robot_NFC\Underwater_Robot_NFC\bin\Debug\underwater_robot_balance.xlsx");
+            xlWorkbook = xlApp.Workbooks.Open(System.Windows.Forms.Application.StartupPath  + "\\underwater_robot_balance.xlsx", Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
             xlWorksheet = xlWorkbook.Sheets[1];
             xlRange = xlWorksheet.UsedRange;
         }
@@ -84,13 +84,32 @@ namespace Underwater_Robot_NFC
         {
             try
             {
-                comport = new SerialPort(this.comport_list.SelectedItem.ToString(), 9600, Parity.None, 8, StopBits.One);
-                comport.ReceivedBytesThreshold = 1;
-                comport.DataReceived += new SerialDataReceivedEventHandler(comport_data_received);
-                if (!comport.IsOpen)
+                if (comport == null)
+                {
+                    comport = new SerialPort(this.comport_list.SelectedItem.ToString(), 9600, Parity.None, 8, StopBits.One);
+                    comport.ReceivedBytesThreshold = 1;
+                    comport.DataReceived += new SerialDataReceivedEventHandler(comport_data_received);
+                    if (!comport.IsOpen)
+                    {
+                        comport.Open();
+                        connect_btn.Content = "Disconnect";
+                    }
+                    timer = new System.Windows.Forms.Timer();
+                    timer.Interval = 10;
+                    timer.Tick += new EventHandler(timer_Tick);
+                    timer.Start();
+                }
+                else if (!comport.IsOpen)
                 {
                     comport.Open();
-                    connection_lbl.Content = "Connected";
+                    connect_btn.Content = "Disconnect";
+                    timer.Start();
+                }
+                else
+                {
+                    comport.Close();
+                    timer.Stop();
+                    connect_btn.Content = "Connect";
                 }
             }
             catch
@@ -98,10 +117,6 @@ namespace Underwater_Robot_NFC
                 System.Windows.MessageBox.Show("No com port selected","Error");
                 return;
             }
-            timer = new System.Windows.Forms.Timer();
-            timer.Interval = 10;
-            timer.Tick += new EventHandler(timer_Tick);
-            timer.Start();
         }
 
         private void comport_data_received(object sender, SerialDataReceivedEventArgs e)
@@ -161,7 +176,7 @@ namespace Underwater_Robot_NFC
             }
             else{
                 team_name.Text = "Team: ";
-                team_balance.Text = "0";
+                team_balance.Text = "";
             }
         }
 

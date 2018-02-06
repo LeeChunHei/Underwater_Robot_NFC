@@ -1,0 +1,17 @@
+D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\bin\Release\Underwater_Robot_NFC.exe.config
+D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\bin\Release\Underwater_Robot_NFC.exe
+D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\bin\Release\Underwater_Robot_NFC.pdb
+D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Release\Underwater_Robot_NFC.csproj.ResolveComReference.cache
+D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Release\MainWindow.g.cs
+D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Release\Await.g.cs
+D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Release\App.g.cs
+D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Release\Underwater_Robot_NFC_MarkupCompile.cache
+D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Release\Underwater_Robot_NFC_MarkupCompile.lref
+D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Release\MainWindow.baml
+D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Release\Await.baml
+D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Release\Underwater_Robot_NFC.g.resources
+D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Release\Underwater_Robot_NFC.Properties.Resources.resources
+D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Release\Underwater_Robot_NFC.csproj.GenerateResource.Cache
+D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Release\Underwater_Robot_NFC.csproj.CoreCompileInputs.cache
+D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Release\Underwater_Robot_NFC.exe
+D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Release\Underwater_Robot_NFC.pdb

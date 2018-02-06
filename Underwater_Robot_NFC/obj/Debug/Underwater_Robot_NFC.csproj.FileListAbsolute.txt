@@ -14,8 +14,6 @@ D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC
 D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Debug\Underwater_Robot_NFC.exe
 D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Debug\Underwater_Robot_NFC.pdb
 D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Debug\Underwater_Robot_NFC.csproj.ResolveComReference.cache
-D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Debug\card_init_window.g.cs
-D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Debug\card_init_window.baml
 C:\Users\mcreng\git\Underwater_Robot_NFC\Underwater_Robot_NFC\bin\Debug\Underwater_Robot_NFC.exe.config
 C:\Users\mcreng\git\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Debug\Underwater_Robot_NFC.csproj.ResolveComReference.cache
 C:\Users\mcreng\git\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Debug\Underwater_Robot_NFC.exe
@@ -33,3 +31,5 @@ C:\Users\mcreng\git\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Debug\Await.ba
 C:\Users\mcreng\git\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Debug\Underwater_Robot_NFC.g.resources
 C:\Users\mcreng\git\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Debug\Underwater_Robot_NFC.Properties.Resources.resources
 C:\Users\mcreng\git\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Debug\Underwater_Robot_NFC.csproj.GenerateResource.Cache
+D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Debug\Await.g.cs
+D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Debug\Await.baml

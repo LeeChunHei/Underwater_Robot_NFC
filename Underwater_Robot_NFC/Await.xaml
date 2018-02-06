@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Underwater_Robot_NFC"
         mc:Ignorable="d"
-        Title="Window1" Height="200" Width="350">
+        Title="" Height="200" Width="350" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
-        <Label x:Name="label" Content="Please tap the card..." Margin="60,64,53,0" VerticalAlignment="Top" RenderTransformOrigin="0.932,-0.402" FontSize="24"/>
+        <Label x:Name="label" Content="Please tap the card..." Margin="60,64,53,0" VerticalAlignment="Top" RenderTransformOrigin="0.932,-0.402" FontSize="24" HorizontalAlignment="Center" VerticalContentAlignment="Center"/>
         <Button x:Name="btn_cancel" Content="Cancel" HorizontalAlignment="Left" Margin="242,131,0,0" VerticalAlignment="Top" Width="75" Click="btn_cancel_Click"/>
 
     </Grid>
