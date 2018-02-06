@@ -290,7 +290,7 @@ namespace Underwater_Robot_NFC
             Int32 amt = 0;
             if (!Int32.TryParse(((TextBox)balance_change).Text, out amt) || amt < 0)
             {
-                amt = 5;
+                amt = 10;
             }
             else
             {
