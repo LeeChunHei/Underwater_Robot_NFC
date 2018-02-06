@@ -7,11 +7,11 @@
         mc:Ignorable="d"
         Title="Underwater Robot NFC system" Height="350" Width="525">
     <Grid>
-        <TextBlock Margin="0,168,364.4,120.8" TextWrapping="Wrap" Text="comport " Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="24"/>
-        <ComboBox x:Name="comport_list" HorizontalAlignment="Left" Margin="159,178,0,120.8" VerticalAlignment="Center" Width="120" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-        <Button x:Name="connect_btn" Content="Connect" HorizontalAlignment="Left" Margin="357,85,0,0" VerticalAlignment="Top" Width="75" Click="connect_btn_Click"/>
-        <TextBlock x:Name="team_name" HorizontalAlignment="Left" Margin="357,155,0,0" TextWrapping="Wrap" Text="Team: " VerticalAlignment="Top"/>
-        <TextBox x:Name="balance_change" HorizontalAlignment="Left" Height="23" Margin="357,217,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" KeyDown="balance_changed"/>
-        <TextBlock x:Name="team_balance" HorizontalAlignment="Left" Margin="371,200,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top"/>
+        <TextBlock Margin="0,31,388.4,260.2" TextWrapping="Wrap" Text="COM Port:" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="24"/>
+        <ComboBox x:Name="comport_list" HorizontalAlignment="Left" Margin="135,39,0,260.2" VerticalAlignment="Center" Width="120" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <Button x:Name="connect_btn" Content="Connect" HorizontalAlignment="Left" Margin="276,41,0,0" VerticalAlignment="Top" Width="75" Click="connect_btn_Click"/>
+        <TextBlock x:Name="team_name" HorizontalAlignment="Left" Margin="93,85,0,0" TextWrapping="Wrap" Text="Team: " VerticalAlignment="Top"/>
+        <TextBox x:Name="balance_change" HorizontalAlignment="Left" Height="23" Margin="135,107,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" KeyDown="balance_changed"/>
+        <TextBlock x:Name="team_balance" HorizontalAlignment="Left" Margin="123,108,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

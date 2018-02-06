@@ -25,7 +25,7 @@ namespace Underwater_Robot_NFC
     {
         SerialPort comport;
         System.Windows.Forms.Timer timer;
-        bool card_tapped = false;
+        public static bool card_tapped = false;
         Byte[] send_buffer = new Byte[] { 0xAA, 0x02, 0x09, 0x04 };
         bool data_coming = false;
         Byte[] recieve_buffer = new Byte[5];
@@ -46,7 +46,7 @@ namespace Underwater_Robot_NFC
                 this.comport_list.Items.Add(port);
             }
             xlApp = new Excel.Application();
-            xlWorkbook = xlApp.Workbooks.Open(@"D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\bin\Debug\underwater_robot_balance.xlsx");
+            xlWorkbook = xlApp.Workbooks.Open(@"C:\Users\mcreng\git\Underwater_Robot_NFC\Underwater_Robot_NFC\bin\Debug\underwater_robot_balance.xlsx");
             xlWorksheet = xlWorkbook.Sheets[1];
             xlRange = xlWorksheet.UsedRange;
         }
@@ -62,12 +62,13 @@ namespace Underwater_Robot_NFC
             //  ex: [somthing].[something].[something] is bad
 
             //release com objects to fully kill excel process from running in the background
-            Marshal.ReleaseComObject(xlRange);
-            Marshal.ReleaseComObject(xlWorksheet);
+
 
             //close and release
             xlWorkbook.Save();
             xlWorkbook.Close();
+            Marshal.ReleaseComObject(xlRange);
+            Marshal.ReleaseComObject(xlWorksheet);
             Marshal.ReleaseComObject(xlWorkbook);
 
             //quit and release
@@ -164,14 +165,16 @@ namespace Underwater_Robot_NFC
 
         private void balance_changed(object sender, KeyEventArgs e)
         {
+            /*
             if (!card_tapped)
             {
                 System.Windows.MessageBox.Show("Please tap the card!", "Error");
                 return;
             }
+            */
             if (e.Key == Key.Enter)
             {
-                double value = xlRange.Cells[team_id, 2].Value2;
+                
                 Int32 value_reduced = 0;
                 if(!Int32.TryParse(((TextBox)sender).Text, out value_reduced))
                 {
@@ -185,6 +188,15 @@ namespace Underwater_Robot_NFC
                     ((TextBox)sender).Text = "";
                     return;
                 }
+
+                bool flag = false;
+                Window1 w = new Window1(ref card_tapped, ref flag);
+                w.ShowDialog();
+                
+                //while (!card_tapped) ;
+                //w.Close();
+                
+                double value = xlRange.Cells[team_id, 2].Value2;
                 if (value_reduced > value)
                 {
                     System.Windows.MessageBox.Show("Not enough credit!", "Error");
