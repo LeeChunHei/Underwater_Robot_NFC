@@ -1,0 +1,64 @@
+
+Log Entry : 21:47:31 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 21:48:16 Tuesday, 13 February 2018
+  Success: No.6 remains 490 credits, request 10 credits, new balance 490 credits
+-------------------------------
+
+Log Entry : 21:50:51 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 21:51:08 Tuesday, 13 February 2018
+  Success: No.6 remains 485 credits, request 5 credits, new balance 485 credits
+-------------------------------
+
+Log Entry : 21:54:25 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 21:54:38 Tuesday, 13 February 2018
+  Success: No.6 remains 475 credits, request 10 credits, new balance 475 credits
+-------------------------------
+
+Log Entry : 21:54:59 Tuesday, 13 February 2018
+  Success: No.6 remains 465 credits, request 10 credits, new balance 465 credits
+-------------------------------
+
+Log Entry : 21:57:17 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 21:57:26 Tuesday, 13 February 2018
+  Success: No.6 remains 490 credits, request 10 credits, new balance 490 credits
+-------------------------------
+
+Log Entry : 21:57:39 Tuesday, 13 February 2018
+  Success: No.6 remains 440 credits, request 50 credits, new balance 440 credits
+-------------------------------
+
+Log Entry : 22:00:03 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 22:01:12 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 22:01:18 Tuesday, 13 February 2018
+  Success: No.6 remains 435 credits, request 5 credits, new balance 435 credits
+-------------------------------
+
+Log Entry : 22:01:49 Tuesday, 13 February 2018
+  Error: cannot open port
+-------------------------------
+
+Log Entry : 22:01:49 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 22:01:55 Tuesday, 13 February 2018
+  Success: No.6 remains 428 credits, request 7 credits, new balance 428 credits
+-------------------------------

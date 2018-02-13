@@ -35,7 +35,7 @@ namespace Underwater_Robot_NFC
         UInt16 team_id = 0;
         Excel.Application xlApp;
         Excel.Workbook xlWorkbook;
-        Excel._Worksheet xlWorksheet;
+        Excel._Worksheet xlWorksheet, xlLog;
         Excel.Range xlRange;
 
         public MainWindow()
@@ -47,9 +47,19 @@ namespace Underwater_Robot_NFC
             {
                 this.comport_list.Items.Add(port);
             }
-            xlApp = new Excel.Application();
+
+            try
+            {
+                xlApp = (Excel.Application)System.Runtime.InteropServices.Marshal.GetActiveObject("Excel.Application");
+            }
+            catch (Exception ex)
+            {
+                xlApp = new Excel.Application();
+            }
+
             xlWorkbook = xlApp.Workbooks.Open(System.Windows.Forms.Application.StartupPath  + "\\underwater_robot_balance.xlsx", Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
             xlWorksheet = xlWorkbook.Sheets[1];
+            xlLog = xlWorkbook.Sheets[2];
             xlRange = xlWorksheet.UsedRange;
         }
 
@@ -72,14 +82,13 @@ namespace Underwater_Robot_NFC
             //rule of thumb for releasing com objects:
             //  never use two dots, all COM objects must be referenced and released individually
             //  ex: [somthing].[something].[something] is bad
-            
+
             //release com objects to fully kill excel process from running in the background
 
 
             //close and release
-
-            xlWorkbook.Save();
             xlWorkbook.Close();
+
             Marshal.ReleaseComObject(xlRange);
             Marshal.ReleaseComObject(xlWorksheet);
             Marshal.ReleaseComObject(xlWorkbook);
@@ -249,11 +258,20 @@ namespace Underwater_Robot_NFC
                     return;
                 }
 
+                String inf = "Confirm trade for Team " + team_id.ToString() + " with payment $" + value_reduced.ToString() + "?";
+
+                if (MessageBox.Show(inf, "Confirmation", System.Windows.MessageBoxButton.YesNo) == MessageBoxResult.No)
+                {
+                    System.Windows.MessageBox.Show("Cancelled.", "");
+                    return;
+                }
+
                 value -= value_reduced;
                 xlRange.Cells[team_id, 2].Value2 = value;
                 System.Windows.MessageBox.Show("Balance Updated\n" + "New balance: " + value.ToString(), "Success");
-                ((TextBox)balance_change).Text = "";
+                ((TextBox)balance_change).Text = "0";
                 log("Success: " + xlRange.Cells[team_id, 1].Text + " remains " + value.ToString() + " credits, request " + value_reduced.ToString() + " credits, new balance " + value.ToString() + " credits");
+                xlWorkbook.Save();
             }
             catch
             {
@@ -358,6 +376,11 @@ namespace Underwater_Robot_NFC
         private void checkout_Click(object sender, RoutedEventArgs e)
         {
             check_out();
+        }
+
+        private void clr_btn_Click(object sender, RoutedEventArgs e)
+        {
+            balance_change.Text = "0";
         }
     }
 }
