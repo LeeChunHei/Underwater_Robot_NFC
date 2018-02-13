@@ -37,6 +37,7 @@ namespace Underwater_Robot_NFC
         Excel.Workbook xlWorkbook;
         Excel._Worksheet xlWorksheet, xlLog;
         Excel.Range xlRange;
+        Microsoft.Office.Interop.Excel.PivotTables pivotTables;
 
         public MainWindow()
         {
@@ -57,10 +58,11 @@ namespace Underwater_Robot_NFC
                 xlApp = new Excel.Application();
             }
 
-            xlWorkbook = xlApp.Workbooks.Open(System.Windows.Forms.Application.StartupPath  + "\\underwater_robot_balance.xlsx", Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+            xlWorkbook = xlApp.Workbooks.Open(System.Windows.Forms.Application.StartupPath  + "\\NFC.xlsx", Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
             xlWorksheet = xlWorkbook.Sheets[1];
             xlLog = xlWorkbook.Sheets[2];
             xlRange = xlWorksheet.UsedRange;
+            pivotTables = (Microsoft.Office.Interop.Excel.PivotTables)xlLog.PivotTables(Type.Missing);
         }
 
         private void log(string log_message)
@@ -194,8 +196,8 @@ namespace Underwater_Robot_NFC
             comport.Write(send_buffer, 0, send_buffer.Length);
             if (team_id > 0&&card_tapped)
             {
-                team_name.Text = "Team: " + xlRange.Cells[team_id, 1].Text;
-                team_balance.Text = xlRange.Cells[team_id, 2].Text;
+                team_name.Text = "Team: " + xlRange.Cells[team_id+1, 2].Text;
+                team_balance.Text = xlRange.Cells[team_id+1, 3].Text;
             }
             else{
                 team_name.Text = "Team: ";
@@ -249,16 +251,17 @@ namespace Underwater_Robot_NFC
                     ((TextBox)balance_change).Text = "";
                     return;
                 }
-                double value = xlRange.Cells[team_id, 2].Value2;
+                double value = xlRange.Cells[team_id+1, 3].Value2;
                 if (value_reduced > value)
                 {
                     System.Windows.MessageBox.Show("Not enough credit!", "Error");
                     ((TextBox)balance_change).Text = "";
-                    log("Error: " + xlRange.Cells[team_id, 1].Text + " remains " + value.ToString() + " credits, request " + value_reduced.ToString() + " credits, not enough credit");
+                    log("Error: " + xlRange.Cells[team_id+1, 2].Text + " remains " + value.ToString() + " credits, request " + value_reduced.ToString() + " credits, not enough credit");
                     return;
                 }
 
-                String inf = "Confirm trade for Team " + team_id.ToString() + " with payment $" + value_reduced.ToString() + "?";
+                String name = xlWorksheet.Cells[team_id + 1, 2].Text;
+                String inf = "Confirm trade for Team " + name + " with payment $" + value_reduced.ToString() + "?";
 
                 if (MessageBox.Show(inf, "Confirmation", System.Windows.MessageBoxButton.YesNo) == MessageBoxResult.No)
                 {
@@ -267,13 +270,19 @@ namespace Underwater_Robot_NFC
                 }
 
                 value -= value_reduced;
-                xlRange.Cells[team_id, 2].Value2 = value;
+                //xlRange.Cells[team_id, 3].Value2 = value;
+                int ptr = (int)xlLog.Cells[1, 5].Value2;
+                xlLog.Cells[ptr, 1].Value2 = team_id;
+                xlLog.Cells[ptr, 2].Value2 = -value_reduced;
+                xlLog.Cells[ptr, 3] = DateTime.Now.ToLongTimeString() + " " + DateTime.Now.ToLongDateString();
+                xlLog.Cells[1, 5] = ptr+1;
                 System.Windows.MessageBox.Show("Balance Updated\n" + "New balance: " + value.ToString(), "Success");
                 ((TextBox)balance_change).Text = "0";
-                log("Success: " + xlRange.Cells[team_id, 1].Text + " remains " + value.ToString() + " credits, request " + value_reduced.ToString() + " credits, new balance " + value.ToString() + " credits");
+                log("Success: " + xlRange.Cells[team_id+1, 2].Text + " remains " + value.ToString() + " credits, request " + value_reduced.ToString() + " credits, new balance " + value.ToString() + " credits");
+                pivotTables.Item(1).RefreshTable();
                 xlWorkbook.Save();
             }
-            catch
+            catch (Exception e)
             {
                 System.Windows.MessageBox.Show("No com port selected", "Error");
                 log("Error: cannot open port");

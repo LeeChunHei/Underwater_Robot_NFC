@@ -62,3 +62,175 @@ Log Entry : 22:01:49 Tuesday, 13 February 2018
 Log Entry : 22:01:55 Tuesday, 13 February 2018
   Success: No.6 remains 428 credits, request 7 credits, new balance 428 credits
 -------------------------------
+
+Log Entry : 22:17:11 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 22:17:18 Tuesday, 13 February 2018
+  Success: No.6 remains 413 credits, request 15 credits, new balance 413 credits
+-------------------------------
+
+Log Entry : 22:17:34 Tuesday, 13 February 2018
+  Success: No.6 remains 403 credits, request 10 credits, new balance 403 credits
+-------------------------------
+
+Log Entry : 22:18:18 Tuesday, 13 February 2018
+  Error: cannot open port
+-------------------------------
+
+Log Entry : 22:18:18 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 22:18:23 Tuesday, 13 February 2018
+  Success: No.6 remains 397 credits, request 6 credits, new balance 397 credits
+-------------------------------
+
+Log Entry : 23:14:34 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 23:14:45 Tuesday, 13 February 2018
+  Success: E remains 480 credits, request 20 credits, new balance 480 credits
+-------------------------------
+
+Log Entry : 23:15:03 Tuesday, 13 February 2018
+  Success: port closed
+-------------------------------
+
+Log Entry : 23:19:24 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 23:19:33 Tuesday, 13 February 2018
+  Error: cannot open port
+-------------------------------
+
+Log Entry : 23:19:34 Tuesday, 13 February 2018
+  Success: port closed
+-------------------------------
+
+Log Entry : 23:19:34 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 23:19:41 Tuesday, 13 February 2018
+  Error: cannot open port
+-------------------------------
+
+Log Entry : 23:20:53 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 23:21:40 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 23:21:44 Tuesday, 13 February 2018
+  Error: cannot open port
+-------------------------------
+
+Log Entry : 23:21:46 Tuesday, 13 February 2018
+  Success: port closed
+-------------------------------
+
+Log Entry : 23:22:14 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 23:22:41 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 23:23:19 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 23:24:40 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 23:24:46 Tuesday, 13 February 2018
+  Success: E remains 490 credits, request 10 credits, new balance 490 credits
+-------------------------------
+
+Log Entry : 23:28:20 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 23:28:25 Tuesday, 13 February 2018
+  Success: E remains 490 credits, request 10 credits, new balance 490 credits
+-------------------------------
+
+Log Entry : 23:28:48 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 23:28:54 Tuesday, 13 February 2018
+  Success: port closed
+-------------------------------
+
+Log Entry : 23:30:15 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 23:30:15 Tuesday, 13 February 2018
+  Success: port closed
+-------------------------------
+
+Log Entry : 23:30:16 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 23:30:26 Tuesday, 13 February 2018
+  Success: F remains 460 credits, request 30 credits, new balance 460 credits
+-------------------------------
+
+Log Entry : 23:30:38 Tuesday, 13 February 2018
+  Success: F remains 455 credits, request 5 credits, new balance 455 credits
+-------------------------------
+
+Log Entry : 23:31:17 Tuesday, 13 February 2018
+  Success: F remains 440 credits, request 15 credits, new balance 440 credits
+-------------------------------
+
+Log Entry : 23:32:36 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 23:32:42 Tuesday, 13 February 2018
+  Error: cannot open port
+-------------------------------
+
+Log Entry : 23:32:49 Tuesday, 13 February 2018
+  Error: cannot open port
+-------------------------------
+
+Log Entry : 23:33:44 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 23:33:49 Tuesday, 13 February 2018
+  Error: cannot open port
+-------------------------------
+
+Log Entry : 23:34:11 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 23:34:36 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------
+
+Log Entry : 23:34:46 Tuesday, 13 February 2018
+  Success: F remains 430 credits, request 10 credits, new balance 430 credits
+-------------------------------
+
+Log Entry : 23:34:54 Tuesday, 13 February 2018
+  Success: F remains 420 credits, request 10 credits, new balance 420 credits
+-------------------------------
+
+Log Entry : 23:38:16 Tuesday, 13 February 2018
+  Success: port opened
+-------------------------------

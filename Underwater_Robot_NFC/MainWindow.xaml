@@ -10,25 +10,25 @@
         <TextBlock Margin="0,52,304.4,239.2" TextWrapping="Wrap" Text="COM Port:" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="24"/>
         <ComboBox x:Name="comport_list" HorizontalAlignment="Left" Margin="219,59,0,239.6" VerticalAlignment="Center" Width="120" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="32"/>
         <Button x:Name="connect_btn" Content="Connect" HorizontalAlignment="Left" Margin="353,62,0,0" VerticalAlignment="Top" Width="75" Click="connect_btn_Click"/>
-        <Grid HorizontalAlignment="Left" Height="147" Margin="122,112,0,0" VerticalAlignment="Top" Width="283" RenderTransformOrigin="0.422,-0.362">
-            <Grid Margin="11,57,10,-24">
-                <TextBox x:Name="balance_change" HorizontalAlignment="Left" Height="23" Margin="45,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="41" KeyDown="balance_changed" Text="0"/>
-                <Label x:Name="label" Content="g x $" HorizontalAlignment="Left" Margin="87,1,0,0" VerticalAlignment="Top"/>
-                <TextBox x:Name="unit_price" HorizontalAlignment="Left" Height="23" Margin="125,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="37" Text="1"/>
-                <Label x:Name="label1" Content="/g" HorizontalAlignment="Left" Margin="163,0,0,0" VerticalAlignment="Top"/>
-                <Label x:Name="label3" Content="Price:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <Button x:Name="price_add_five" Content="+5g" HorizontalAlignment="Left" Margin="75,30,0,0" VerticalAlignment="Top" Width="28" Click="price_add_five_Click"/>
-                <Button x:Name="price_add_ten" Content="+10g" HorizontalAlignment="Left" Margin="108,31,0,0" VerticalAlignment="Top" Width="42" Click="price_add_ten_Click"/>
-                <Button x:Name="price_sub_ten" Content="-10g" HorizontalAlignment="Left" Margin="108,54,0,0" VerticalAlignment="Top" Width="42" Click="price_sub_ten_Click"/>
-                <Button x:Name="price_sub_one" Content="-1g" HorizontalAlignment="Left" Margin="45,54,0,0" VerticalAlignment="Top" Width="28" Click="price_sub_one_Click"/>
-                <Button x:Name="price_sub_five" Content="-5g" HorizontalAlignment="Left" Margin="75,54,0,0" VerticalAlignment="Top" Width="28" Click="price_sub_five_Click"/>
-                <Button x:Name="checkout" Content="Checkout" HorizontalAlignment="Left" Margin="155,31,0,0" VerticalAlignment="Top" Width="70" Height="44" Click="checkout_Click"/>
-                <Button x:Name="clr_btn" Content="Clear" HorizontalAlignment="Left" Margin="-4,42,0,0" VerticalAlignment="Top" Width="44" Click="clr_btn_Click"/>
-                <Button x:Name="price_add_one" Content="+1g" HorizontalAlignment="Left" Margin="45,30,0,0" VerticalAlignment="Top" Width="28" Click="price_add_one_Click"/>
+        <Grid HorizontalAlignment="Left" Height="157" Margin="121,104,0,0" VerticalAlignment="Top" Width="283" RenderTransformOrigin="0.422,-0.362">
+            <Grid Margin="11,57,-9,-24">
+                <TextBox x:Name="balance_change" HorizontalAlignment="Left" Height="23" Margin="93,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="41" KeyDown="balance_changed" Text="0"/>
+                <Label x:Name="label" Content="g x $" HorizontalAlignment="Left" Margin="135,-11,0,0" VerticalAlignment="Top" FontSize="24"/>
+                <TextBox x:Name="unit_price" HorizontalAlignment="Left" Height="23" Margin="195,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="37" Text="1"/>
+                <Label x:Name="label1" Content="/g" HorizontalAlignment="Left" Margin="233,-12,0,0" VerticalAlignment="Top" FontSize="24"/>
+                <Label x:Name="label3" Content="Price:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24" Margin="26,-11,0,0"/>
+                <Button x:Name="price_add_five" Content="+5g" HorizontalAlignment="Left" Margin="115,31,0,0" VerticalAlignment="Top" Width="28" Click="price_add_five_Click"/>
+                <Button x:Name="price_add_ten" Content="+10g" HorizontalAlignment="Left" Margin="148,31,0,0" VerticalAlignment="Top" Width="42" Click="price_add_ten_Click"/>
+                <Button x:Name="price_sub_ten" Content="-10g" HorizontalAlignment="Left" Margin="148,57,0,0" VerticalAlignment="Top" Width="42" Click="price_sub_ten_Click"/>
+                <Button x:Name="price_sub_one" Content="-1g" HorizontalAlignment="Left" Margin="82,57,0,0" VerticalAlignment="Top" Width="28" Click="price_sub_one_Click"/>
+                <Button x:Name="price_sub_five" Content="-5g" HorizontalAlignment="Left" Margin="115,56,0,0" VerticalAlignment="Top" Width="28" Click="price_sub_five_Click"/>
+                <Button x:Name="checkout" Content="Checkout" HorizontalAlignment="Left" Margin="195,30,0,0" VerticalAlignment="Top" Width="70" Height="44" Click="checkout_Click"/>
+                <Button x:Name="clr_btn" Content="Clear" HorizontalAlignment="Left" Margin="33,41,0,0" VerticalAlignment="Top" Width="44" Click="clr_btn_Click"/>
+                <Button x:Name="price_add_one" Content="+1g" HorizontalAlignment="Left" Margin="82,30,0,0" VerticalAlignment="Top" Width="28" Click="price_add_one_Click"/>
             </Grid>
             <TextBlock x:Name="team_balance" HorizontalAlignment="Left" Margin="101,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
-            <TextBlock x:Name="team_name" HorizontalAlignment="Left" Margin="65,12,0,0" TextWrapping="Wrap" Text="Team: " VerticalAlignment="Top"/>
-            <Label x:Name="label2" Content="Credits:" HorizontalAlignment="Left" Margin="52,25,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.035,-0.511"/>
+            <TextBlock x:Name="team_name" HorizontalAlignment="Left" Margin="37,0,0,0" TextWrapping="Wrap" Text="Team: " VerticalAlignment="Top" FontSize="24"/>
+            <Label x:Name="label2" Content="Credits:" HorizontalAlignment="Left" Margin="14,20,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.035,-0.511" FontSize="24"/>
         </Grid>
     </Grid>
 </Window>
