@@ -5,10 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Underwater_Robot_NFC"
         mc:Ignorable="d"
-        Title="" Height="200" Width="350" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="" Height="200" Width="350" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}">
     <Grid>
-        <Label x:Name="label" Content="Please tap the card." Margin="65,67,63,63.8" RenderTransformOrigin="0.932,-0.402" FontSize="24" VerticalContentAlignment="Center"/>
-        <Button x:Name="btn_cancel" Content="Cancel" HorizontalAlignment="Left" Margin="242,131,0,0" VerticalAlignment="Top" Width="75" Click="btn_cancel_Click"/>
-
+        <TextBlock x:Name="label" Text="Please tap the card." FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,32"/>
+        <Button x:Name="btn_cancel" Content="Cancel" Click="btn_cancel_Click" VerticalAlignment="Bottom" Margin="8"/>
     </Grid>
 </Window>

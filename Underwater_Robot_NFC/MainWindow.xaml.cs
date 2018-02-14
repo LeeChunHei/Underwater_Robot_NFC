@@ -1,20 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Ports;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Underwater_Robot_NFC
@@ -37,7 +26,22 @@ namespace Underwater_Robot_NFC
         Excel.Workbook xlWorkbook;
         Excel._Worksheet xlWorksheet, xlLog;
         Excel.Range xlRange;
-        Microsoft.Office.Interop.Excel.PivotTables pivotTables;
+        Excel.PivotTables pivotTables;
+
+        /// <summary>
+        /// product cost
+        /// </summary>
+        private Int32 costTotal = 0;
+
+        /// <summary>
+        /// weight
+        /// </summary>
+        private Int32 weight = 0;
+
+        /// <summary>
+        /// cost per gram
+        /// </summary>
+        private Int32 unitPrice = 0;
 
         public MainWindow()
         {
@@ -46,26 +50,35 @@ namespace Underwater_Robot_NFC
             string[] ports = SerialPort.GetPortNames();
             foreach (string port in ports)
             {
-                this.comport_list.Items.Add(port);
+                comport_list.Items.Add(port);
             }
 
             try
             {
-                xlApp = (Excel.Application)System.Runtime.InteropServices.Marshal.GetActiveObject("Excel.Application");
+                xlApp = (Excel.Application)Marshal.GetActiveObject("Excel.Application");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 xlApp = new Excel.Application();
             }
 
-            xlWorkbook = xlApp.Workbooks.Open(System.Windows.Forms.Application.StartupPath  + "\\NFC.xlsx", Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-            xlWorksheet = xlWorkbook.Sheets[1];
-            xlLog = xlWorkbook.Sheets[2];
-            xlRange = xlWorksheet.UsedRange;
-            pivotTables = (Microsoft.Office.Interop.Excel.PivotTables)xlLog.PivotTables(Type.Missing);
+            try
+            {
+                xlWorkbook = xlApp.Workbooks.Open(System.Windows.Forms.Application.StartupPath + "\\NFC.xlsx");
+                xlWorksheet = xlWorkbook.Sheets[1];
+                xlLog = xlWorkbook.Sheets[2];
+                xlRange = xlWorksheet.UsedRange;
+                pivotTables = (Excel.PivotTables)xlLog.PivotTables(Type.Missing);
+            }
+            catch (COMException e)
+            {
+                MessageBox.Show("Please close and start \"NFC.xlsx\" and try again!");
+                Log(e.ToString());
+            }
+
         }
 
-        private void log(string log_message)
+        private void Log(string log_message)
         {
             using(StreamWriter log_text = File.AppendText("log.txt")){
                 log_text.Write("\r\nLog Entry : ");
@@ -83,7 +96,7 @@ namespace Underwater_Robot_NFC
 
             //rule of thumb for releasing com objects:
             //  never use two dots, all COM objects must be referenced and released individually
-            //  ex: [somthing].[something].[something] is bad
+            //  e: [somthing].[something].[something] is bad
 
             //release com objects to fully kill excel process from running in the background
 
@@ -101,50 +114,54 @@ namespace Underwater_Robot_NFC
             Marshal.FinalReleaseComObject(xlApp);
         }
 
-        private void connect_btn_Click(object sender, RoutedEventArgs e)
+        private void ConnectBtnClick(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (comport == null)
                 {
-                    comport = new SerialPort(this.comport_list.SelectedItem.ToString(), 9600, Parity.None, 8, StopBits.One);
-                    comport.ReceivedBytesThreshold = 1;
-                    comport.DataReceived += new SerialDataReceivedEventHandler(comport_data_received);
+                    comport = new SerialPort(this.comport_list.SelectedItem.ToString(), 9600, Parity.None, 8, StopBits.One)
+                    {
+                        ReceivedBytesThreshold = 1
+                    };
+                    comport.DataReceived += new SerialDataReceivedEventHandler(ComportDataReceived);
                     if (!comport.IsOpen)
                     {
                         comport.Open();
                         connect_btn.Content = "Disconnect";
                     }
-                    timer = new System.Windows.Forms.Timer();
-                    timer.Interval = 10;
-                    timer.Tick += new EventHandler(timer_Tick);
+                    timer = new System.Windows.Forms.Timer
+                    {
+                        Interval = 10
+                    };
+                    timer.Tick += new EventHandler(TimerTick);
                     timer.Start();
-                    log("Success: port opened");
+                    Log("Success: port opened");
                 }
                 else if (!comport.IsOpen)
                 {
                     comport.Open();
                     connect_btn.Content = "Disconnect";
                     timer.Start();
-                    log("Success: port opened");
+                    Log("Success: port opened");
                 }
                 else
                 {
                     comport.Close();
                     timer.Stop();
                     connect_btn.Content = "Connect";
-                    log("Success: port closed");
+                    Log("Success: port closed");
                 }
             }
             catch
             {
-                System.Windows.MessageBox.Show("No com port selected","Error");
-                log("Error: cannot open port");
+                MessageBox.Show("No com port selected","Error");
+                Log("Error: cannot open port");
                 return;
             }
         }
 
-        private void comport_data_received(object sender, SerialDataReceivedEventArgs e)
+        private void ComportDataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             SerialPort sp = (SerialPort)sender;
             while(sp.BytesToRead!=0)
@@ -166,7 +183,7 @@ namespace Underwater_Robot_NFC
                 {
                     buffer_recieved = 0;
                     data_coming = false;
-                    decode();
+                    Decode();
                     card_tapped = true;
                     timer.Start();
                     return;
@@ -174,12 +191,12 @@ namespace Underwater_Robot_NFC
             }
         }
 
-        private void decode()
+        private void Decode()
         {
             team_id = (UInt16)recieve_buffer[1];
         }
 
-        private void timer_Tick(object sender, EventArgs e)
+        private void TimerTick(object sender, EventArgs e)
         {
             try
             {
@@ -190,57 +207,58 @@ namespace Underwater_Robot_NFC
             }
             catch
             {
-                System.Windows.MessageBox.Show("No com port selected","Error");
+                MessageBox.Show("No com port selected","Error");
                 return;
             }
             comport.Write(send_buffer, 0, send_buffer.Length);
-            if (team_id > 0&&card_tapped)
+            if (team_id > 0 && card_tapped)
             {
-                team_name.Text = "Team: " + xlRange.Cells[team_id+1, 2].Text;
-                team_balance.Text = xlRange.Cells[team_id+1, 3].Text;
+                TextBlockTeamID.Text = team_id.ToString();
+                TextBlockTeamName.Text = xlRange.Cells[team_id+1, 2].Text;
+                TextBlockBalance.Text = xlRange.Cells[team_id+1, 3].Text;
             }
             else{
-                team_name.Text = "Team: ";
-                team_balance.Text = "";
+                TextBlockTeamID.Text = "";
+                TextBlockTeamName.Text = "";
+                TextBlockBalance.Text = "";
             }
         }
 
-        private void check_out()
+        private void CheckOut()
         {
             try
             {
                 if (!comport.IsOpen)
                 {
-                    System.Windows.MessageBox.Show("No com port selected", "Error");
-                    log("Error: port not opened");
+                    MessageBox.Show("No com port selected", "Error");
+                    Log("Error: port not opened");
                     return;
                 }
-                Int32 value_reduced = 0, unit_price_amt = 0;
-                if (!Int32.TryParse(((TextBox)balance_change).Text, out value_reduced))
+                if (!Int32.TryParse(TextBoxWeight.Text, out weight))
                 {
-                    System.Windows.MessageBox.Show("Please type integer!", "Error");
-                    ((TextBox)balance_change).Text = "";
+                    MessageBox.Show("Please input integer!", "Error");
+                    TextBoxWeight.Text = "";
                     return;
                 }
-                if (value_reduced < 0)
+                if (weight < 0)
                 {
-                    System.Windows.MessageBox.Show("Please type positive integer!", "Error");
-                    ((TextBox)balance_change).Text = "";
+                    MessageBox.Show("Please input positive integer!", "Error");
+                    TextBoxWeight.Text = "";
                     return;
                 }
-                if (!Int32.TryParse(((TextBox)unit_price).Text, out unit_price_amt))
+                if (!Int32.TryParse(TextBoxUnitPrice.Text, out unitPrice))
                 {
-                    System.Windows.MessageBox.Show("Please type integer in unit price!", "Error");
-                    ((TextBox)unit_price).Text = "";
+                    MessageBox.Show("Please input integer in unit price!", "Error");
+                    TextBoxUnitPrice.Text = "";
                     return;
                 }
-                if (unit_price_amt < 0)
+                if (unitPrice < 0)
                 {
-                    System.Windows.MessageBox.Show("Please type positive integer in unit price!", "Error");
-                    ((TextBox)balance_change).Text = "";
+                    MessageBox.Show("Please input positive integer in unit price!", "Error");
+                    TextBoxWeight.Text = "";
                     return;
                 }
-                value_reduced *= unit_price_amt;
+                UpdateSum();
                 bool flag = false;
                 Window1 w = new Window1(ref card_tapped, ref flag);
                 processed_flag = false;
@@ -248,148 +266,140 @@ namespace Underwater_Robot_NFC
 
                 if (!processed_flag)
                 {
-                    ((TextBox)balance_change).Text = "";
+                    weight = 0;
+                    UpdateSum();
                     return;
                 }
                 double value = xlRange.Cells[team_id+1, 3].Value2;
-                if (value_reduced > value)
+                if (costTotal > value)
                 {
-                    System.Windows.MessageBox.Show("Not enough credit!", "Error");
-                    ((TextBox)balance_change).Text = "";
-                    log("Error: " + xlRange.Cells[team_id+1, 2].Text + " remains " + value.ToString() + " credits, request " + value_reduced.ToString() + " credits, not enough credit");
+                    MessageBox.Show("Not enough credits!", "Error");
+                    weight = 0;
+                    UpdateSum();
+                    Log("Error: " + xlRange.Cells[team_id+1, 2].Text + " remains " + value.ToString() + " credits, requests " + costTotal.ToString() + " credits, not enough credits.");
                     return;
                 }
 
                 String name = xlWorksheet.Cells[team_id + 1, 2].Text;
-                String inf = "Confirm trade for Team " + name + " with payment $" + value_reduced.ToString() + "?";
+                String inf = "Confirm trade with Team " + name + " for payment of $" + costTotal.ToString() + "?";
 
-                if (MessageBox.Show(inf, "Confirmation", System.Windows.MessageBoxButton.YesNo) == MessageBoxResult.No)
+                if (MessageBox.Show(inf, "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.No)
                 {
-                    System.Windows.MessageBox.Show("Cancelled.", "");
+                    MessageBox.Show("Cancelled.", "");
                     return;
                 }
 
-                value -= value_reduced;
+                value -= costTotal;
                 //xlRange.Cells[team_id, 3].Value2 = value;
-                int ptr = (int)xlLog.Cells[1, 5].Value2;
+                int ptr = (int)xlLog.Cells[3, 14].Value2;
                 xlLog.Cells[ptr, 1].Value2 = team_id;
-                xlLog.Cells[ptr, 2].Value2 = -value_reduced;
+                xlLog.Cells[ptr, 2].Value2 = -costTotal;
                 xlLog.Cells[ptr, 3] = DateTime.Now.ToLongTimeString() + " " + DateTime.Now.ToLongDateString();
-                xlLog.Cells[1, 5] = ptr+1;
-                System.Windows.MessageBox.Show("Balance Updated\n" + "New balance: " + value.ToString(), "Success");
-                ((TextBox)balance_change).Text = "0";
-                log("Success: " + xlRange.Cells[team_id+1, 2].Text + " remains " + value.ToString() + " credits, request " + value_reduced.ToString() + " credits, new balance " + value.ToString() + " credits");
+                xlLog.Cells[3, 14] = ptr+1;
+                MessageBox.Show("Balance Updated\n" + "New balance: " + value.ToString(), "Success");
+
+                weight = 0;
+                UpdateSum();
+
+                Log("Success: " + xlRange.Cells[team_id+1, 2].Text + " remains " + value.ToString() + " credits, requests " + costTotal.ToString() + " credits, new balance " + value.ToString() + " credits.");
                 pivotTables.Item(1).RefreshTable();
                 xlWorkbook.Save();
             }
             catch (Exception e)
             {
-                System.Windows.MessageBox.Show("No com port selected", "Error");
-                log("Error: cannot open port");
+                MessageBox.Show("No com port selected", "Error");
+                Log("Error: cannot open port" + e.ToString());
                 return;
             }
 
         }
 
-        private void balance_changed(object sender, KeyEventArgs e)
+        private void TextBoxWeightQuickCheckOut(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                check_out();
+                CheckOut();
             }
         }
 
-        private void price_add_one_Click(object sender, RoutedEventArgs e)
+        private void PriceAddOneClick(object sender, RoutedEventArgs e)
         {
-            Int32 amt = 0;
-            if (!Int32.TryParse(((TextBox)balance_change).Text, out amt) || amt < 0)
-            {
-                amt = 1;
-            } else
-            {
-                amt += 1;
-            }
-            balance_change.Text = amt.ToString();
-        }
-
-        private void price_add_ten_Click(object sender, RoutedEventArgs e)
-        {
-            Int32 amt = 0;
-            if (!Int32.TryParse(((TextBox)balance_change).Text, out amt) || amt < 0)
-            {
-                amt = 10;
-            }
+            if (!Int32.TryParse(TextBoxWeight.Text, out weight) || weight < 0)
+                weight = 1;
             else
-            {
-                amt += 10;
-            }
-            balance_change.Text = amt.ToString();
+                weight += 1;
+            UpdateSum();
         }
 
-        private void price_add_five_Click(object sender, RoutedEventArgs e)
+        private void PriceAddTenClick(object sender, RoutedEventArgs e)
         {
-            Int32 amt = 0;
-            if (!Int32.TryParse(((TextBox)balance_change).Text, out amt) || amt < 0)
-            {
-                amt = 5;
-            }
+            if (!Int32.TryParse(TextBoxWeight.Text, out weight) || weight < 0)
+                weight = 10;
             else
-            {
-                amt += 5;
-            }
-            balance_change.Text = amt.ToString();
+                weight += 10;
+            UpdateSum();
         }
 
-        private void price_sub_one_Click(object sender, RoutedEventArgs e)
+        private void PriceAddFiveClick(object sender, RoutedEventArgs e)
         {
-            Int32 amt = 0;
-            if (!Int32.TryParse(((TextBox)balance_change).Text, out amt) || amt < 1)
-            {
-                amt = 0;
-            }
+            if (!Int32.TryParse(TextBoxWeight.Text, out weight) || weight < 0)
+                weight = 5;
             else
-            {
-                amt -= 1;
-            }
-            balance_change.Text = amt.ToString();
+                weight += 5;
+            UpdateSum();
         }
 
-        private void price_sub_five_Click(object sender, RoutedEventArgs e)
+        private void PriceSubOneClick(object sender, RoutedEventArgs e)
         {
-            Int32 amt = 0;
-            if (!Int32.TryParse(((TextBox)balance_change).Text, out amt) || amt < 5)
-            {
-                amt = 0;
-            }
+            if (!Int32.TryParse(TextBoxWeight.Text, out weight) || weight < 1)
+                weight = 0;
             else
-            {
-                amt -= 5;
-            }
-            balance_change.Text = amt.ToString();
+                weight -= 1;
+            UpdateSum();
         }
 
-        private void price_sub_ten_Click(object sender, RoutedEventArgs e)
+        private void PriceSubFiveClick(object sender, RoutedEventArgs e)
         {
-            Int32 amt = 0;
-            if (!Int32.TryParse(((TextBox)balance_change).Text, out amt) || amt < 10)
-            {
-                amt = 0;
-            }
+            if (!Int32.TryParse(TextBoxWeight.Text, out weight) || weight < 5)
+                weight = 0;
             else
-            {
-                amt -= 10;
-            }
-            balance_change.Text = amt.ToString();
+                weight -= 5;
+            UpdateSum();
         }
 
-        private void checkout_Click(object sender, RoutedEventArgs e)
+        private void PriceSubTenClick(object sender, RoutedEventArgs e)
         {
-            check_out();
+            if (!Int32.TryParse(TextBoxWeight.Text, out weight) || weight < 10)
+                weight = 0;
+            else
+                weight -= 10;
+            UpdateSum();
         }
 
-        private void clr_btn_Click(object sender, RoutedEventArgs e)
+        private void CheckoutClick(object sender, RoutedEventArgs e)
         {
-            balance_change.Text = "0";
+            CheckOut();
+        }
+
+        private void ClrBtnClick(object sender, RoutedEventArgs e)
+        {
+            costTotal = 0;
+            weight = 0;
+            UpdateSum();
+        }
+
+        private void BalanceChanged(object sender, KeyEventArgs e)
+        {
+            Int32.TryParse(TextBoxWeight.Text, out weight);
+            Int32.TryParse(TextBoxUnitPrice.Text, out unitPrice);
+            UpdateSum();
+        }
+
+        private void UpdateSum()
+        {
+            costTotal = weight * unitPrice;
+            TextBlockSum.Text = costTotal.ToString();
+            TextBoxWeight.Text = weight.ToString();
         }
     }
 }

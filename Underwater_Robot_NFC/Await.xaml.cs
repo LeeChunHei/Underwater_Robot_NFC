@@ -19,15 +19,16 @@ namespace Underwater_Robot_NFC
     /// </summary>
     public partial class Window1 : Window
     {
-        bool flag;
         bool card_tapped;
         public Window1(ref bool card_tapped, ref bool flag)
         {
             //this.flag = MainWindow.flag;
             this.card_tapped = MainWindow.card_tapped;
             InitializeComponent();
-            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-            timer.Interval = 10;
+            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer
+            {
+                Interval = 10
+            };
             timer.Tick += new EventHandler(timer_Tick);
             timer.Start();
         }
