@@ -39,3 +39,8 @@ D:\projects\cs\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Release\Underwater_
 D:\projects\cs\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Release\Underwater_Robot_NFC.exe
 D:\projects\cs\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Release\Underwater_Robot_NFC.pdb
 D:\projects\cs\Underwater_Robot_NFC\Underwater_Robot_NFC\bin\Release\Underwater_Robot_NFC.pdb
+D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\bin\Release\MaterialDesignColors.dll
+D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\bin\Release\MaterialDesignThemes.Wpf.dll
+D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\bin\Release\MaterialDesignThemes.Wpf.pdb
+D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\bin\Release\MaterialDesignThemes.Wpf.xml
+D:\School\robotics_team\underwater_nfc\Underwater_Robot_NFC\Underwater_Robot_NFC\obj\Release\App.baml
